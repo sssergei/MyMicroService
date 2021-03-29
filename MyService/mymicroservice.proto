@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "github.com/sssergei/MyMicroService/tree/main/MyService";
+
 package mymicroservice;
 
 // The mymicroservice definition.
