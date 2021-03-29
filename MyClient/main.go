@@ -50,16 +50,25 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
+
+	r, err = c.SayReplay1(ctx, &pb.ReplayRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
+	log.Printf("OK")
 	log.Printf("Greeting: %s", r.GetMessage())
+	//r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
+	//if err != nil {
+	//	log.Fatalf("could not greet: %v", err)
+	//}
+	//log.Printf("Greeting: %s", r.GetMessage())
 
-	r, err = c.SayHelloAgain(ctx, &pb.HelloRequest{Name: name})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
-	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	//r, err = c.SayHelloAgain(ctx, &pb.HelloRequest{Name: name})
+	//if err != nil {
+	//	log.Fatalf("could not greet: %v", err)
+	//}
+	//log.Printf("Greeting: %s", r.GetMessage())
 
+	//log.Printf("Greeting: %s", r.GetMessage())
+	//log.Printf("Number: %d", r.GetNumber())
 }
