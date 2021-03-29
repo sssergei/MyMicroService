@@ -25,7 +25,7 @@ import (
 	"os"
 	"time"
 
-	//pb "github.com/sssergei/MyMicroService/tree/main/MyService"
+	pb "github.com/sssergei/MyMicroService/MyService"
 	"google.golang.org/grpc"
 )
 
@@ -41,7 +41,7 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewGreeterClient(conn)
+	c := pb.NewMyServiceClient(conn)
 
 	// Contact the server and print out its response.
 	name := defaultName

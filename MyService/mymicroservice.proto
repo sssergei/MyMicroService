@@ -7,6 +7,8 @@ package mymicroservice;
 // The mymicroservice definition.
 service MyService {
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  // Sends another greeting
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
 }
 
 // The request message containing the user's name.
