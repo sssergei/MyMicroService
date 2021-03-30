@@ -6,29 +6,52 @@ package mymicroservice;
 
 // The mymicroservice definition.
 service MyService {
-  //rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
   // Sends another greeting
-  //rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
 
-  rpc SayReplay1 (ReplayRequest) returns (Replay1) {}
+  //rpc SayReplay1 (ReplayRequest) returns (Replay1) {}
+
+  rpc CreateConsignment(Consignment) returns (Response) {}
 }
 
 // The request message containing the user's name.
-//message HelloRequest {
-//  string name = 1;
-//}
-
-// The request message containing the user's name.
-message ReplayRequest {
+message HelloRequest {
   string name = 1;
 }
 
+// The request message containing the user's name.
+//message ReplayRequest {
+//  string name = 1;
+//}
+
 // The response message containing the greetings
-//message HelloReply {
+message HelloReply {
+  string message = 1;
+}
+
+// The responce message containing the string and number
+//message Replay1 {
 //  string message = 1;
 //}
 
-// The responce message containing the string and number
-message Replay1 {
-  string message = 1;
+///////////////////////////////////////////////////
+message Consignment {
+  string id = 1;
+  string description = 2;
+  int32 weight = 3;
+  repeated Container containers = 4;
+  string vessel_id = 5;
+}
+
+message Container {
+  string id = 1;
+  string customer_id = 2;
+  string origin = 3;
+  string user_id = 4;
+}
+
+message Response {
+  bool created = 1;
+  Consignment consignment = 2;
 }
