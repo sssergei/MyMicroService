@@ -21,8 +21,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -32,20 +30,9 @@ import (
 )
 
 const (
-	address         = "localhost:50051"
-	defaultName     = "world"
-	defaultFilename = "consignment.json"
+	address     = "localhost:50051"
+	defaultName = "world"
 )
-
-func parseFile(file string) (*pb.Consignment, error) {
-	var consignment *pb.Consignment
-	data, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	json.Unmarshal(data, &consignment)
-	return consignment, err
-}
 
 func main() {
 	// Set up a connection to the server.
@@ -63,20 +50,6 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-
-	// Contact the server and print out its response.
-	file := defaultFilename
-	if len(os.Args) > 1 {
-		file = os.Args[1]
-	}
-	consignment, err := parseFile(file)
-
-	r, err := c.CreateConsignment(context.Background(), consignment)
-	if err != nil {
-		log.Fatalf("Could not greet: %v", err)
-	}
-	log.Printf("Created: %t", r.Created)
-
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)

@@ -21,7 +21,6 @@ type MyServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	// Sends another greeting
 	SayHelloAgain(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
-	CreateConsignment(ctx context.Context, in *Consignment, opts ...grpc.CallOption) (*Response, error)
 }
 
 type myServiceClient struct {
@@ -50,15 +49,6 @@ func (c *myServiceClient) SayHelloAgain(ctx context.Context, in *HelloRequest, o
 	return out, nil
 }
 
-func (c *myServiceClient) CreateConsignment(ctx context.Context, in *Consignment, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
-	err := c.cc.Invoke(ctx, "/mymicroservice.MyService/CreateConsignment", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MyServiceServer is the server API for MyService service.
 // All implementations must embed UnimplementedMyServiceServer
 // for forward compatibility
@@ -66,7 +56,6 @@ type MyServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	// Sends another greeting
 	SayHelloAgain(context.Context, *HelloRequest) (*HelloReply, error)
-	CreateConsignment(context.Context, *Consignment) (*Response, error)
 	mustEmbedUnimplementedMyServiceServer()
 }
 
@@ -79,9 +68,6 @@ func (UnimplementedMyServiceServer) SayHello(context.Context, *HelloRequest) (*H
 }
 func (UnimplementedMyServiceServer) SayHelloAgain(context.Context, *HelloRequest) (*HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHelloAgain not implemented")
-}
-func (UnimplementedMyServiceServer) CreateConsignment(context.Context, *Consignment) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateConsignment not implemented")
 }
 func (UnimplementedMyServiceServer) mustEmbedUnimplementedMyServiceServer() {}
 
@@ -132,24 +118,6 @@ func _MyService_SayHelloAgain_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MyService_CreateConsignment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Consignment)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MyServiceServer).CreateConsignment(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mymicroservice.MyService/CreateConsignment",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MyServiceServer).CreateConsignment(ctx, req.(*Consignment))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // MyService_ServiceDesc is the grpc.ServiceDesc for MyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -164,10 +132,6 @@ var MyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHelloAgain",
 			Handler:    _MyService_SayHelloAgain_Handler,
-		},
-		{
-			MethodName: "CreateConsignment",
-			Handler:    _MyService_CreateConsignment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
